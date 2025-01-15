@@ -8,7 +8,7 @@ function App() {
     const [error, setError] = useState(false);
     const [filter, setFilter] = useState("all");
 
-    // Function to add a new to-do
+
     const addTodo = () => {
         if (newTodo.trim().length === 0) {
             setError(true);
@@ -22,27 +22,63 @@ function App() {
         }
     };
 
-    // Function to delete a to-do
+ 
     const deleteTodo = (id) => {
         setTodos((prev) => prev.filter((todo) => todo.id !== id));
     };
 
-    // Function to toggle task completion status
+  
     const toggleComplete = (id) => {
         setTodos((prev) =>
             prev.map((todo) =>
                 todo.id === id
-                    ? { ...todo, status: todo.status === "ACTIVE" ? "COMPLETED" : "ACTIVE" }
+                    ? {
+                          ...todo,
+                          status:
+                              todo.status === "ACTIVE" ? "COMPLETED" : "ACTIVE",
+                      }
                     : todo
             )
         );
     };
 
-    // Function to filter tasks based on the selected filter
+    //suuld hiisen oorchlolt
+
+    const completedTasksCount = todos.filter(
+        (todo) => todo.status === "COMPLETED"
+    ).length;
+    const totalTasks = todos.length;
+
+    const clearCompleted = () => {
+        setTodos((prev) => prev.filter((todo) => todo.status !== "COMPLETED"));
+    };
+
+  
     const filteredTodos = () => {
         if (filter === "all") return todos;
-        if (filter === "active") return todos.filter((todo) => todo.status === "ACTIVE");
-        if (filter === "completed") return todos.filter((todo) => todo.status === "COMPLETED");
+        else if (filter === "active")
+            return todos.filter((todo) => todo.status === "ACTIVE");
+        else if (filter === "completed")
+            return todos.filter((todo) => todo.status === "COMPLETED");
+    };
+
+    const filterMessage = () => {
+        if (filter === "all") {
+            return todos.length === 0
+                ? "No tasks yet. Add one above!"
+                : "Showing all tasks.";
+        } else if (filter === "active") {
+            const activeTasks = todos.filter((todo) => !todo.completed);
+            return activeTasks.length === 0
+                ? "No active tasks found."
+                : "Showing active tasks.";
+        } else if (filter === "completed") {
+            const completedTasks = todos.filter((todo) => todo.completed);
+            return completedTasks.length === 0
+                ? "No completed tasks found."
+                : "Showing completed tasks.";
+        }
+        return "Invalid filter.";
     };
 
     return (
@@ -63,36 +99,76 @@ function App() {
 
                 {/* Filter Buttons */}
                 <div className="filters">
-                    <button onClick={() => setFilter("all")} className={filter === "all" ? "active" : ""}>
+                    <button
+                        onClick={() => setFilter("all")}
+                        className={filter === "all" ? "active" : ""}
+                    >
                         All
                     </button>
-                    <button onClick={() => setFilter("active")} className={filter === "active" ? "active" : ""}>
+                    <button
+                        onClick={() => setFilter("active")}
+                        className={filter === "active" ? "active" : ""}
+                    >
                         Active
                     </button>
-                    <button onClick={() => setFilter("completed")} className={filter === "completed" ? "active" : ""}>
+                    <button
+                        onClick={() => setFilter("completed")}
+                        className={filter === "completed" ? "active" : ""}
+                    >
                         Completed
                     </button>
+                </div>
+
+                <div className="filter-message">
+                    <p>{filterMessage()}</p>
                 </div>
 
                 {/* To-Do List */}
                 <ul>
                     {filteredTodos().map((todo) => (
-                        <li key={todo.id} className={todo.status === "COMPLETED" ? "completed" : ""}>
+                        <li
+                            id="taskContainer"
+                            key={todo.id}
+                            className={
+                                todo.status === "COMPLETED" ? "completed" : ""
+                            }
+                        >
                             <input
                                 type="checkbox"
                                 checked={todo.status === "COMPLETED"}
                                 onChange={() => toggleComplete(todo.id)}
                             />
                             <span>{todo.description}</span>
-                            <button onClick={() => deleteTodo(todo.id)} className="delete-btn">
+                            <button
+                                onClick={() => deleteTodo(todo.id)}
+                                className="delete-btn"
+                            >
                                 Delete
                             </button>
                         </li>
                     ))}
                 </ul>
 
+                {todos.length !== 0 && (
+                    <div className="summary-container">
+                        <div className="summary-text">
+                            {completedTasksCount} of {todos.length} tasks
+                            completed
+                        </div>
+                        <div className="clear-task">
+                            {completedTasksCount > 0 && (
+                                <button id="clearButton" onClick={clearCompleted}>
+                                    Clear Completed
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                )}
                 <div>
-                    <p>Powered by <a href="https://pinecone.mn/">Pinecone Academy</a></p>
+                    <p>
+                        Powered by{" "}
+                        <a href="https://pinecone.mn/">Pinecone Academy</a>
+                    </p>
                 </div>
             </div>
         </div>

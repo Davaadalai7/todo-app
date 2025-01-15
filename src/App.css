@@ -1,7 +1,7 @@
 #root {
   margin: 0;
   text-align: center;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 /* Main container */
@@ -95,6 +95,7 @@ button:hover {
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s;
+  width: 50%;
 }
 
 .filters button:hover {
@@ -139,7 +140,7 @@ li:hover {
   right: 10px; /* Align to the right */
   top: 50%;
   transform: translateY(-50%); /* Align vertically to center */
-  background-color: red;
+  background-color: #007bff;
   color: white;
   border: none;
   padding: 6px 12px;
@@ -167,16 +168,14 @@ input[type="checkbox"] {
   color: #888;
 }
 
-/* Completed tasks checkbox style */
 input[type="checkbox"]:checked + span {
   text-decoration: line-through;
   color: #888;
 }
 
-/* Span text style */
 span {
   flex-grow: 1; /* Allow the text to take the remaining space */
-  text-align: left; /* Align text to the left */
+  text-align: left; 
   font-size: 16px;
   padding-left: 8px;
 }
@@ -195,4 +194,34 @@ span {
   button {
       width: 30%;
   }
+}
+#taskContainer input{
+  width: 30px;
+  height: 30px;
+
+}
+#taskContainer{
+  overflow: scroll;
+}
+
+.filter-message {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #555;
+}
+
+a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.summary-container {
+display: flex;
+justify-content: space-between;
+width: 100%;
+} 
+
+#clearButton {
+  width: 90%;
+  padding: 5px;
 }
